@@ -34,4 +34,4 @@ export class OrderModel {
         const order = await OrderEntity.query().findById(orderId).withGraphFetched('products');
         return order?.products || [];
     }
-}
+};
