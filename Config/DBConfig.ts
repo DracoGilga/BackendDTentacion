@@ -1,18 +1,11 @@
 import Knex from 'knex';
 import { Model } from 'objection';
+import { Config } from './Config';
 
-const knexConfig = {
-    client: 'mssql',
-    connection: {
-        host: 'localhost',
-        user: 'user',
-        password: 'password',
-        database: 'database',
-        port: 1433,
-    },
-};
+const environment = process.env.NODE_ENV || "development"; 
+const knexConfig = Config[environment];
 
-const knex = Knex(knexConfig);
-Model.knex(knex);
+const DBConfig  = Knex(knexConfig); 
+Model.knex(DBConfig ); 
 
-export { knex };
+export { DBConfig };
