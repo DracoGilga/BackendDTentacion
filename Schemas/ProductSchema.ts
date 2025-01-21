@@ -1,6 +1,6 @@
 import { gql } from 'graphql-tag';
 
-export const typeDefs = gql`
+export const ProductSchema = gql`
     type Product {
         id: ID!
         productName: String!
@@ -42,12 +42,5 @@ export const typeDefs = gql`
         id: ID!
         categoryName: String!
         categoryDescription: String!
-    }
-
-    type Ingredient {
-        id: ID!
-        name: String!
-        quantity: Int!
-        unitPrice: Float!
     }
 `;

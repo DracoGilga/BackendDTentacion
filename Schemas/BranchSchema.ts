@@ -1,6 +1,6 @@
 import { gql } from 'graphql-tag';
 
-export const typeDefs = gql`
+export const BranchSchema = gql`
     type Branch {
         id: ID!
         branchName: String!

@@ -1,6 +1,6 @@
 import { AdminModel } from '../Models/AdminModel';
 
-export const resolvers = {
+export const AdminResolver = {
     Query: {
         getAdminById: async (_: any, { id }: { id: number }) => {
             return await AdminModel.findById(id);

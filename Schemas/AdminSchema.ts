@@ -1,6 +1,6 @@
 import { gql } from 'graphql-tag';
 
-export const typeDefs = gql`
+export const AdminSchema = gql`
     type Admin {
         id: ID!
         firstName: String!

@@ -2,7 +2,7 @@ import { BranchModel } from '../Models/BranchModel';
 import { OrderEntity } from '../Entities/OrderEntity';
 import { UbicationEntity } from '../Entities/UbicationEntity';
 
-export const resolvers = {
+export const BranchResolver = {
     Query: {
         getBranchById: async (_: any, { id }: { id: number }) => {
             return await BranchModel.findById(id);
