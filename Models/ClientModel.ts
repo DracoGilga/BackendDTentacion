@@ -21,4 +21,13 @@ export class ClientModel {
     static async deleteById(id: number): Promise<number> {
         return await ClientEntity.query().deleteById(id);
     }
+
+    static async login(phone: string, password: string): Promise<ClientEntity | null> {
+        const client = await ClientEntity.query().where('phone', phone).first();
+
+        if (client && client.password === password)
+            return client;
+
+        return null;
+    }
 }

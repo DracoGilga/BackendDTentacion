@@ -13,6 +13,7 @@ import { OrderSchema } from './Schemas/OrderSchema';
 import { ProductSchema } from './Schemas/ProductSchema';
 import { UbicationSchema } from './Schemas/UbicationSchema';
 import { LogSchema } from './Schemas/LogSchema';
+import { LoginSchema } from './Schemas/LoginSchema';
 
 import { AdminResolver } from './Resolvers/AdminResolver';
 import { BranchResolver } from './Resolvers/BranchResolver';
@@ -23,6 +24,7 @@ import { OrderResolver } from './Resolvers/OrderResolver';
 import { ProductResolver } from './Resolvers/ProductResolver';
 import { UbicationResolver } from './Resolvers/UbicationResolver';
 import { LogResolver } from './Resolvers/LogResolver';
+import { LoginResolver } from './Resolvers/LoginResolver';
 
 const typeDefs = [
     AdminSchema,
@@ -34,6 +36,7 @@ const typeDefs = [
     ProductSchema,
     UbicationSchema,
     LogSchema,
+    LoginSchema,
 ];
 
 const resolvers = [
@@ -46,6 +49,7 @@ const resolvers = [
     ProductResolver,
     UbicationResolver,
     LogResolver,
+    LoginResolver,
 ];
 
 const server = new ApolloServer({
