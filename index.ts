@@ -1,5 +1,6 @@
 import './Config/Config';
 import './Config/DBConfig';
+import './Config/RedisDB';
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
 
