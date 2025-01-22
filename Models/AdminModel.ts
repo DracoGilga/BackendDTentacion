@@ -22,4 +22,13 @@ export class AdminModel {
     static async findByFirstName(firstName: string): Promise<AdminEntity[]> {
         return await AdminEntity.query().where('firstName', firstName);
     }
+
+    static async login(username: string, password: string): Promise<AdminEntity | null> {
+        const admin = await AdminEntity.query().where('username', username).first();
+        
+        if (admin && admin.password === password)
+            return admin;
+
+        return null;
+    }
 }
