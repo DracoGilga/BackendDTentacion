@@ -5,7 +5,5 @@ import { Config } from './Config';
 const environment = process.env.NODE_ENV || "development";
 const knexConfig = Config[environment].database;
 
-const DBConfig = Knex(knexConfig);
+export const DBConfig = Knex(knexConfig);
 Model.knex(DBConfig);
-
-export { DBConfig };

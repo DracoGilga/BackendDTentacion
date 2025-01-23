@@ -9,11 +9,3 @@ export const RedisDB = new Redis({
 	port: redisConfig.port,
 	password: redisConfig.password,
 });
-
-RedisDB.on("connect", () => {
-	console.log("Conectado a Redis");
-});
-
-RedisDB.on("error", (err) => {
-	console.error("Error en Redis:", err);
-});

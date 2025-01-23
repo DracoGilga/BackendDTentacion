@@ -1,4 +1,3 @@
-import './Config/Config';
 import './Config/DBConfig';
 import './Config/RedisDB';
 import { ApolloServer } from '@apollo/server';

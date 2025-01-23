@@ -37,7 +37,6 @@ export const Config: IConfig = {
                 database: process.env.DB_DATABASE,
                 port: Number(process.env.DB_PORT) || 1433,
             },
-            pool: { min: 2, max: 10 },
         },
         redis: {
             host: process.env.REDIS_HOST || '127.0.0.1',
@@ -55,7 +54,6 @@ export const Config: IConfig = {
                 database: process.env.TEST_DB_DATABASE,
                 port: Number(process.env.TEST_DB_PORT) || 1433,
             },
-            pool: { min: 2, max: 10 },
         },
         redis: {
             host: process.env.REDIS_HOST || '127.0.0.1',
@@ -73,7 +71,6 @@ export const Config: IConfig = {
                 database: process.env.PROD_DB_DATABASE,
                 port: Number(process.env.PROD_DB_PORT) || 1433,
             },
-            pool: { min: 2, max: 10 },
         },
         redis: {
             host: process.env.REDIS_HOST || '127.0.0.1',
