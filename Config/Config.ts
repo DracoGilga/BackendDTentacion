@@ -24,6 +24,10 @@ interface IConfig {
         database: IDBConfig;
         redis: IRedisConfig;
     };
+    [key: string]: {
+        database: IDBConfig;
+        redis: IRedisConfig;
+    };
 }
 
 export const Config: IConfig = {
