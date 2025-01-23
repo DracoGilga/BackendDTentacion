@@ -1,5 +1,5 @@
-import { UbicationModel } from '../Models/UbicationModel';
-import { RedisHelper } from '../Utils/RedisHelper';
+import { UbicationModel } from '../../Models/UbicationModel';
+import { RedisHelper } from '../../Utils/RedisHelper';
 
 export const UbicationResolver = {
     Query: {

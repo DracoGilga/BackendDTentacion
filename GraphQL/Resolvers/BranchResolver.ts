@@ -1,6 +1,4 @@
-import { BranchModel } from '../Models/BranchModel';
-import { OrderEntity } from '../Entities/OrderEntity';
-import { UbicationEntity } from '../Entities/UbicationEntity';
+import { BranchModel } from '../../Models/BranchModel';
 
 export const BranchResolver = {
     Query: {

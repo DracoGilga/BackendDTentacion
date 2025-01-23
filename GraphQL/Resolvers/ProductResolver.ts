@@ -1,5 +1,5 @@
-import { ProductModel } from '../Models/ProductModel';
-import { RedisHelper } from '../Utils/RedisHelper';
+import { ProductModel } from '../../Models/ProductModel';
+import { RedisHelper } from '../../Utils/RedisHelper';
 
 export const ProductResolver = {
     Query: {

@@ -1,4 +1,4 @@
-import { OrderModel } from '../Models/OrderModel';
+import { OrderModel } from '../../Models/OrderModel';
 
 export const OrderResolver = {
     Query: {

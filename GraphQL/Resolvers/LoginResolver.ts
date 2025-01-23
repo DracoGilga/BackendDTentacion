@@ -1,5 +1,5 @@
-import { AdminModel } from '../Models/AdminModel';
-import { ClientModel } from '../Models/ClientModel';
+import { AdminModel } from '../../Models/AdminModel';
+import { ClientModel } from '../../Models/ClientModel';
 
 export const LoginResolver = {
     Mutation: {

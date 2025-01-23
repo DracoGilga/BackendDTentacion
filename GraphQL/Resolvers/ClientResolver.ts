@@ -1,5 +1,5 @@
-import { ClientModel } from '../Models/ClientModel';
-import { RedisHelper } from '../Utils/RedisHelper';
+import { ClientModel } from '../../Models/ClientModel';
+import { RedisHelper } from '../../Utils/RedisHelper';
 
 export const ClientResolver = {
     Query: {

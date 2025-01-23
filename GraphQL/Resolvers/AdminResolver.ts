@@ -1,5 +1,5 @@
-import { AdminModel } from '../Models/AdminModel';
-import { RedisHelper } from '../Utils/RedisHelper';
+import { AdminModel } from '../../Models/AdminModel';
+import { RedisHelper } from '../../Utils/RedisHelper';
 
 export const AdminResolver = {
     Query: {

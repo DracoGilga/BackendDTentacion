@@ -1,5 +1,5 @@
-import { IngredientModel } from '../Models/IngredientModel';
-import { RedisHelper } from '../Utils/RedisHelper';
+import { IngredientModel } from '../../Models/IngredientModel';
+import { RedisHelper } from '../../Utils/RedisHelper';
 
 export const IngredientResolver = {
     Query: {

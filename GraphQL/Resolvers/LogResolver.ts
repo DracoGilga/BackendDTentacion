@@ -1,4 +1,4 @@
-import { LogModel } from '../Models/LogModel';
+import { LogModel } from '../../Models/LogModel';
 
 export const LogResolver = {
     Query: {
