@@ -27,5 +27,25 @@ export const RedisHelper = {
                 await RedisDB.del(...keys);
             
         } while (cursor !== "0");
+    },
+
+    async exists(key: string): Promise<boolean> {
+        const exists = await RedisDB.exists(key);
+        return exists === 1;
+    },
+
+    async getOrCreate<T>(
+        key: string,
+        dataFetcher: () => Promise<T>,
+        cacheExpiration: number = REDIS_TIME
+    ): Promise<T> {
+        let cachedData = await this.get<T>(key);
+
+        if (!cachedData) {
+            cachedData = await dataFetcher();
+            await this.set(key, cachedData);
+        }
+
+        return cachedData;
     }
 };

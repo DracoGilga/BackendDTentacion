@@ -1,7 +1,7 @@
-import * as dotenv from 'dotenv';
+import { config } from 'dotenv';
 import { Knex } from 'knex';
 
-dotenv.config();
+config();
 
 interface IDBConfig extends Knex.Config { }
 
