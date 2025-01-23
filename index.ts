@@ -3,27 +3,27 @@ import './Config/RedisDB';
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
 
-import { AdminSchema } from './Schemas/AdminSchema';
-import { BranchSchema } from './Schemas/BranchSchema';
-import { CategoryProductSchema } from './Schemas/CategoryProductSchema';
-import { ClientSchema } from './Schemas/ClientSchema';
-import { IngredientSchema } from './Schemas/IngredientSchema';
-import { OrderSchema } from './Schemas/OrderSchema';
-import { ProductSchema } from './Schemas/ProductSchema';
-import { UbicationSchema } from './Schemas/UbicationSchema';
-import { LogSchema } from './Schemas/LogSchema';
-import { LoginSchema } from './Schemas/LoginSchema';
+import { AdminSchema } from './GraphQL/Schemas/AdminSchema';
+import { BranchSchema } from './GraphQL/Schemas/BranchSchema';
+import { CategoryProductSchema } from './GraphQL/Schemas/CategoryProductSchema';
+import { ClientSchema } from './GraphQL/Schemas/ClientSchema';
+import { IngredientSchema } from './GraphQL/Schemas/IngredientSchema';
+import { OrderSchema } from './GraphQL/Schemas/OrderSchema';
+import { ProductSchema } from './GraphQL/Schemas/ProductSchema';
+import { UbicationSchema } from './GraphQL/Schemas/UbicationSchema';
+import { LogSchema } from './GraphQL/Schemas/LogSchema';
+import { LoginSchema } from './GraphQL/Schemas/LoginSchema';
 
-import { AdminResolver } from './Resolvers/AdminResolver';
-import { BranchResolver } from './Resolvers/BranchResolver';
-import { CategoryProductResolver } from './Resolvers/CategoryProductResolver';
-import { ClientResolver } from './Resolvers/ClientResolver';
-import { IngredientResolver } from './Resolvers/IngredientResolver';
-import { OrderResolver } from './Resolvers/OrderResolver';
-import { ProductResolver } from './Resolvers/ProductResolver';
-import { UbicationResolver } from './Resolvers/UbicationResolver';
-import { LogResolver } from './Resolvers/LogResolver';
-import { LoginResolver } from './Resolvers/LoginResolver';
+import { AdminResolver } from './GraphQL/Resolvers/AdminResolver';
+import { BranchResolver } from './GraphQL/Resolvers/BranchResolver';
+import { CategoryProductResolver } from './GraphQL/Resolvers/CategoryProductResolver';
+import { ClientResolver } from './GraphQL/Resolvers/ClientResolver';
+import { IngredientResolver } from './GraphQL/Resolvers/IngredientResolver';
+import { OrderResolver } from './GraphQL/Resolvers/OrderResolver';
+import { ProductResolver } from './GraphQL/Resolvers/ProductResolver';
+import { UbicationResolver } from './GraphQL/Resolvers/UbicationResolver';
+import { LogResolver } from './GraphQL/Resolvers/LogResolver';
+import { LoginResolver } from './GraphQL/Resolvers/LoginResolver';
 
 const typeDefs = [
     AdminSchema,
