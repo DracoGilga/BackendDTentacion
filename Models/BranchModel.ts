@@ -1,36 +1,63 @@
-import { BranchEntity } from '../Entities/BranchEntity';
-import { OrderEntity } from '../Entities/OrderEntity';
-import { UbicationEntity } from '../Entities/UbicationEntity';
+import { Model } from 'objection';
+import { OrderModel } from './OrderModel';
+import { UbicationModel } from './UbicationModel';
 
-export class BranchModel {
-    static async findById(id: number): Promise<BranchEntity | null> {
-        const branch = await BranchEntity.query().findById(id).withGraphFetched('[orders, ubication]');
-        return branch || null;
-    }    
+export class BranchModel extends Model {
+    static tableName = 'branches';
 
-    static async findAll(): Promise<BranchEntity[]> {
-        return await BranchEntity.query().withGraphFetched('[orders, ubication]');
+    id!: number;
+    branchName!: string;
+    ubicationId!: number;
+
+    orders?: OrderModel[];
+    ubication?: UbicationModel;
+
+    static async findById(id: number): Promise<BranchModel | null> {
+        return await this.query().findById(id).withGraphFetched('[orders, ubication]') || null;
     }
 
-    static async create(branchData: Partial<BranchEntity>): Promise<BranchEntity> {
-        return await BranchEntity.query().insert(branchData);
+    static async findAll(): Promise<BranchModel[]> {
+        return await this.query().withGraphFetched('[orders, ubication]');
     }
 
-    static async updateById(id: number, updateData: Partial<BranchEntity>): Promise<BranchEntity | null> {
-        return await BranchEntity.query().patchAndFetchById(id, updateData);
+    static async create(branchData: Partial<BranchModel>): Promise<BranchModel> {
+        return await this.query().insert(branchData);
+    }
+
+    static async updateById(id: number, updateData: Partial<BranchModel>): Promise<BranchModel | null> {
+        return await this.query().patchAndFetchById(id, updateData) || null;
     }
 
     static async deleteById(id: number): Promise<number> {
-        return await BranchEntity.query().deleteById(id);
+        return await this.query().deleteById(id);
     }
 
-    static async getOrdersByBranchId(branchId: number): Promise<OrderEntity[]> {
-        const branch = await BranchEntity.query().findById(branchId).withGraphFetched('orders');
+    static async getOrdersByBranchId(branchId: number): Promise<OrderModel[]> {
+        const branch = await this.query().findById(branchId).withGraphFetched('orders');
         return branch?.orders || [];
     }
 
-    static async getUbicationByBranchId(branchId: number): Promise<UbicationEntity | null> {
-        const branch = await BranchEntity.query().findById(branchId).withGraphFetched('ubication');
+    static async getUbicationByBranchId(branchId: number): Promise<UbicationModel | null> {
+        const branch = await this.query().findById(branchId).withGraphFetched('ubication');
         return branch?.ubication || null;
     }
+
+    static relationMappings = {
+        orders: {
+            relation: Model.HasManyRelation,
+            modelClass: () => OrderModel,
+            join: {
+                from: 'branches.id',
+                to: 'orders.branchId',
+            },
+        },
+        ubication: {
+            relation: Model.BelongsToOneRelation,
+            modelClass: () => UbicationModel,
+            join: {
+                from: 'branches.ubicationId',
+                to: 'ubications.id',
+            },
+        },
+    };
 }

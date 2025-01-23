@@ -1,24 +1,30 @@
-import { UbicationEntity } from "../Entities/UbicationEntity";
+import { Model } from 'objection';
 
-export class UbicationModel {
-    static async findById(id: number): Promise<UbicationEntity | null> {
-        const ubication = await UbicationEntity.query().findById(id);
-        return ubication || null;
+export class UbicationModel extends Model {
+    static tableName = 'ubications';
+
+    id!: number;
+    description!: string;
+    latitude!: number;
+    longitude!: number;
+
+    static async findById(id: number): Promise<UbicationModel | null> {
+        return await this.query().findById(id) || null;
     }
 
-    static async findAll(): Promise<UbicationEntity[]> {
-        return await UbicationEntity.query();
+    static async findAll(): Promise<UbicationModel[]> {
+        return await this.query();
     }
 
-    static async create(ubicationData: Partial<UbicationEntity>): Promise<UbicationEntity> {
-        return await UbicationEntity.query().insert(ubicationData);
+    static async create(ubicationData: Partial<UbicationModel>): Promise<UbicationModel> {
+        return await this.query().insert(ubicationData);
     }
 
-    static async updateById(id: number, updateData: Partial<UbicationEntity>): Promise<UbicationEntity | null> {
-        return await UbicationEntity.query().patchAndFetchById(id, updateData);
+    static async updateById(id: number, updateData: Partial<UbicationModel>): Promise<UbicationModel | null> {
+        return await this.query().patchAndFetchById(id, updateData) || null;
     }
 
     static async deleteById(id: number): Promise<number> {
-        return await UbicationEntity.query().deleteById(id);
+        return await this.query().deleteById(id);
     }
 }

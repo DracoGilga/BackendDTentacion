@@ -1,37 +1,44 @@
-import { OrderEntity } from '../Entities/OrderEntity';
-import { ClientEntity } from '../Entities/ClientEntity';
-import { ProductEntity } from '../Entities/ProductEntity';
+import { Model } from 'objection';
+import { ClientModel } from "./ClientModel";
+import { ProductModel } from "./ProductModel";
 
-export class OrderModel {
-    static async findById(id: number): Promise<OrderEntity | null> {
-        const order = await OrderEntity.query().findById(id).withGraphFetched('[client, products]');
-        return order || null;
+export class OrderModel extends Model {
+    static tableName = 'orders';
+
+    id!: number;
+    totalPrice!: number;
+    clientId!: number;
+
+    client?: ClientModel;
+    products?: ProductModel[];
+
+    static async findById(id: number): Promise<OrderModel | null> {
+        return await this.query().findById(id).withGraphFetched('[client, products]') || null;
     }
 
-    static async findAll(): Promise<OrderEntity[]> {
-        return await OrderEntity.query().withGraphFetched('[client, products]');
+    static async findAll(): Promise<OrderModel[]> {
+        return await this.query().withGraphFetched('[client, products]');
     }
 
-    static async create(orderData: Partial<OrderEntity>): Promise<OrderEntity> {
-        return await OrderEntity.query().insert(orderData);
+    static async create(orderData: Partial<OrderModel>): Promise<OrderModel> {
+        return await this.query().insert(orderData);
     }
 
-    static async updateById(id: number, updateData: Partial<OrderEntity>): Promise<OrderEntity | null> {
-        const updatedOrder = await OrderEntity.query().patchAndFetchById(id, updateData);
-        return updatedOrder || null;
+    static async updateById(id: number, updateData: Partial<OrderModel>): Promise<OrderModel | null> {
+        return await this.query().patchAndFetchById(id, updateData) || null;
     }
 
     static async deleteById(id: number): Promise<number> {
-        return await OrderEntity.query().deleteById(id);
+        return await this.query().deleteById(id);
     }
 
-    static async getClientByOrderId(orderId: number): Promise<ClientEntity | null> {
-        const order = await OrderEntity.query().findById(orderId).withGraphFetched('client');
+    static async getClientByOrderId(orderId: number): Promise<ClientModel | null> {
+        const order = await this.query().findById(orderId).withGraphFetched('client');
         return order?.client || null;
     }
 
-    static async getProductsByOrderId(orderId: number): Promise<ProductEntity[]> {
-        const order = await OrderEntity.query().findById(orderId).withGraphFetched('products');
+    static async getProductsByOrderId(orderId: number): Promise<ProductModel[]> {
+        const order = await this.query().findById(orderId).withGraphFetched('products');
         return order?.products || [];
     }
-};
+}

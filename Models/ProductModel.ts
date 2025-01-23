@@ -1,37 +1,47 @@
-import { ProductEntity } from '../Entities/ProductEntity';
-import { CategoryProductEntity } from '../Entities/CategoryProductEntity';
-import { IngredientEntity } from '../Entities/IngredientEntity';
+import { Model } from 'objection';
+import { CategoryProductModel } from "./CategoryProductModel";
+import { IngredientModel } from "./IngredientModel";
 
-export class ProductModel {
-    static async findById(id: number): Promise<ProductEntity | null> {
-        const product = await ProductEntity.query().findById(id).withGraphFetched('[category, ingredients]');
-        return product || null;
+export class ProductModel extends Model {
+    static tableName = 'products';
+
+    id!: number;
+    productName!: string;
+    stock!: number;
+    finalPrice!: number;
+    expirationDate!: Date;
+    categoryId!: number;
+
+    category?: CategoryProductModel;
+    ingredients?: IngredientModel[];
+
+    static async findById(id: number): Promise<ProductModel | null> {
+        return await this.query().findById(id).withGraphFetched('[category, ingredients]') || null;
     }
 
-    static async findAll(): Promise<ProductEntity[]> {
-        return await ProductEntity.query().withGraphFetched('[category, ingredients]');
+    static async findAll(): Promise<ProductModel[]> {
+        return await this.query().withGraphFetched('[category, ingredients]');
     }
 
-    static async create(productData: Partial<ProductEntity>): Promise<ProductEntity> {
-        return await ProductEntity.query().insert(productData);
+    static async create(productData: Partial<ProductModel>): Promise<ProductModel> {
+        return await this.query().insert(productData);
     }
 
-    static async updateById(id: number, updateData: Partial<ProductEntity>): Promise<ProductEntity | null> {
-        const updatedProduct = await ProductEntity.query().patchAndFetchById(id, updateData);
-        return updatedProduct || null;
+    static async updateById(id: number, updateData: Partial<ProductModel>): Promise<ProductModel | null> {
+        return await this.query().patchAndFetchById(id, updateData) || null;
     }
 
     static async deleteById(id: number): Promise<number> {
-        return await ProductEntity.query().deleteById(id);
+        return await this.query().deleteById(id);
     }
 
-    static async getCategoryByProductId(productId: number): Promise<CategoryProductEntity | null> {
-        const product = await ProductEntity.query().findById(productId).withGraphFetched('category');
+    static async getCategoryByProductId(productId: number): Promise<CategoryProductModel | null> {
+        const product = await this.query().findById(productId).withGraphFetched('category');
         return product?.category || null;
     }
 
-    static async getIngredientsByProductId(productId: number): Promise<IngredientEntity[]> {
-        const product = await ProductEntity.query().findById(productId).withGraphFetched('ingredients');
+    static async getIngredientsByProductId(productId: number): Promise<IngredientModel[]> {
+        const product = await this.query().findById(productId).withGraphFetched('ingredients');
         return product?.ingredients || [];
     }
 }

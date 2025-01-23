@@ -1,24 +1,30 @@
-import { IngredientEntity } from "../Entities/IngredientEntity";
+import { Model } from 'objection';
 
-export class IngredientModel {
-    static async findById(id: number): Promise<IngredientEntity | null> {
-        const ingredient = await IngredientEntity.query().findById(id);
-        return ingredient || null;
+export class IngredientModel extends Model {
+    static tableName = 'ingredients';
+
+    id!: number;
+    name!: string;
+    quantity!: number;
+    unitPrice!: number;
+
+    static async findById(id: number): Promise<IngredientModel | null> {
+        return await this.query().findById(id) || null;
     }
 
-    static async findAll(): Promise<IngredientEntity[]> {
-        return await IngredientEntity.query();
+    static async findAll(): Promise<IngredientModel[]> {
+        return await this.query();
     }
 
-    static async create(ingredientData: Partial<IngredientEntity>): Promise<IngredientEntity> {
-        return await IngredientEntity.query().insert(ingredientData);
+    static async create(ingredientData: Partial<IngredientModel>): Promise<IngredientModel> {
+        return await this.query().insert(ingredientData);
     }
 
-    static async updateById(id: number, updateData: Partial<IngredientEntity>): Promise<IngredientEntity | null> {
-        return await IngredientEntity.query().patchAndFetchById(id, updateData);
+    static async updateById(id: number, updateData: Partial<IngredientModel>): Promise<IngredientModel | null> {
+        return await this.query().patchAndFetchById(id, updateData) || null;
     }
 
     static async deleteById(id: number): Promise<number> {
-        return await IngredientEntity.query().deleteById(id);
+        return await this.query().deleteById(id);
     }
 }
