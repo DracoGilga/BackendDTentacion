@@ -1,32 +1,32 @@
-import { OrderModel } from '../../Models/OrderModel';
+import { OrderController } from "../../Controllers/OrderController";
+import { OrderModel } from "../../Models/OrderModel";
 
 export const OrderResolver = {
     Query: {
         getOrderById: async (_: any, { id }: { id: number }) => {
-            return await OrderModel.findById(id);
+            return await OrderController.getOrderById(id);
         },
         getAllOrders: async () => {
-            return await OrderModel.findAll();
+            return await OrderController.getAllOrders();
         },
     },
     Mutation: {
         createOrder: async (_: any, { input }: { input: Partial<OrderModel> }) => {
-            return await OrderModel.create(input);
+            return await OrderController.createOrder(input);
         },
         updateOrder: async (_: any, { id, input }: { id: number; input: Partial<OrderModel> }) => {
-            return await OrderModel.updateById(id, input);
+            return await OrderController.updateOrder(id, input);
         },
         deleteOrder: async (_: any, { id }: { id: number }) => {
-            const deletedRows = await OrderModel.deleteById(id);
-            return deletedRows > 0;
+            return await OrderController.deleteOrder(id);
         },
     },
     Order: {
         client: async (order: any) => {
-            return await OrderModel.getClientByOrderId(order.id);
+            return await OrderController.getClientByOrderId(order.id);
         },
         products: async (order: any) => {
-            return await OrderModel.getProductsByOrderId(order.id);
+            return await OrderController.getProductsByOrderId(order.id);
         },
     },
 };

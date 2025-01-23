@@ -1,68 +1,28 @@
+import { ClientController } from '../../Controllers/ClientController';
 import { ClientModel } from '../../Models/ClientModel';
-import { RedisHelper } from '../../Utils/RedisHelper';
 
 export const ClientResolver = {
     Query: {
         getClientById: async (_: any, { id }: { id: number }) => {
-            const cacheKey = `client:${id}`;
-            const cachedClient = await RedisHelper.get(cacheKey);
-
-            if (cachedClient) 
-                return cachedClient;
-
-            const client = await ClientModel.findById(id);
-
-            if (client)
-                await RedisHelper.set(cacheKey, client);
-
-            return client;
+            return await ClientController.getClientById(id);
         },
 
         getAllClients: async () => {
-            const cacheKey = `clients:all`;
-            const cachedClients = await RedisHelper.get(cacheKey);
-
-            if (cachedClients) 
-                return cachedClients;
-
-            const clients = await ClientModel.findAll();
-
-            if (clients.length > 0)
-                await RedisHelper.set(cacheKey, clients);
-
-            return clients;
+            return await ClientController.getAllClients();
         },
     },
 
     Mutation: {
         createClient: async (_: any, { input }: { input: Partial<ClientModel> }) => {
-            const newClient = await ClientModel.create(input);
-
-            await RedisHelper.delKeysByPattern(`clients:*`);
-
-            return newClient;
+            return await ClientController.createClient(input);
         },
 
         updateClient: async (_: any, { id, input }: { id: number; input: Partial<ClientModel> }) => {
-            const updatedClient = await ClientModel.updateById(id, input);
-
-            if (updatedClient) {
-                await RedisHelper.set(`client:${id}`, updatedClient);
-                await RedisHelper.delKeysByPattern(`clients:*`);
-            }
-
-            return updatedClient;
+            return await ClientController.updateClient(id, input);
         },
 
         deleteClient: async (_: any, { id }: { id: number }) => {
-            const deletedRows = await ClientModel.deleteById(id);
-
-            if (deletedRows > 0) {
-                await RedisHelper.del(`client:${id}`);
-                await RedisHelper.delKeysByPattern(`clients:*`);
-            }
-
-            return deletedRows > 0;
+            return await ClientController.deleteClient(id);
         },
     },
 };
