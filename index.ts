@@ -2,6 +2,7 @@ import './Config/DBConfig';
 import './Config/RedisDB';
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
+import { LogGraphQLMiddleware } from './Middlewares/LogGraphQLMiddleware';
 
 import { AdminSchema } from './GraphQL/Schemas/AdminSchema';
 import { BranchSchema } from './GraphQL/Schemas/BranchSchema';
@@ -54,11 +55,14 @@ const resolvers = [
 const server = new ApolloServer({
     typeDefs,
     resolvers,
+    plugins: [LogGraphQLMiddleware],
 });
-
 const startServer = async () => {
     const { url } = await startStandaloneServer(server, {
         listen: { port: 4000 },
+        context: async ({ req }) => {
+            return { headers: req.headers };
+        },
     });
 
     console.log(`🚀 Server is running at ${url}`);
