@@ -11,10 +11,6 @@ export const BranchResolver = {
             return await BranchController.getAllBranches();
         },
 
-        getOrdersByBranchId: async (_: any, { branchId }: { branchId: number }) => {
-            return await BranchController.getOrdersByBranchId(branchId);
-        },
-
         getUbicationByBranchId: async (_: any, { branchId }: { branchId: number }) => {
             return await BranchController.getUbicationByBranchId(branchId);
         },
