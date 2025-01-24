@@ -1,5 +1,4 @@
 import { Model } from 'objection';
-import { OrderModel } from './OrderModel';
 import { UbicationModel } from './UbicationModel';
 
 export class BranchModel extends Model {
@@ -9,15 +8,25 @@ export class BranchModel extends Model {
     branchName!: string;
     ubicationId!: number;
 
-    orders?: OrderModel[];
     ubication?: UbicationModel;
 
+    static relationMappings = {
+        ubication: {
+            relation: Model.BelongsToOneRelation,
+            modelClass: () => UbicationModel,
+            join: {
+                from: 'branches.ubicationId',
+                to: 'ubications.id',
+            },
+        },
+    };
+
     static async findById(id: number): Promise<BranchModel | null> {
-        return await this.query().findById(id).withGraphFetched('[orders, ubication]') || null;
+        return await this.query().findById(id).withGraphFetched('[ubication]') || null;
     }
 
     static async findAll(): Promise<BranchModel[]> {
-        return await this.query().withGraphFetched('[orders, ubication]');
+        return await this.query().withGraphFetched('[ubication]');
     }
 
     static async create(branchData: Partial<BranchModel>): Promise<BranchModel> {
@@ -32,32 +41,8 @@ export class BranchModel extends Model {
         return await this.query().deleteById(id);
     }
 
-    static async getOrdersByBranchId(branchId: number): Promise<OrderModel[]> {
-        const branch = await this.query().findById(branchId).withGraphFetched('orders');
-        return branch?.orders || [];
-    }
-
     static async getUbicationByBranchId(branchId: number): Promise<UbicationModel | null> {
         const branch = await this.query().findById(branchId).withGraphFetched('ubication');
         return branch?.ubication || null;
     }
-
-    static relationMappings = {
-        orders: {
-            relation: Model.HasManyRelation,
-            modelClass: () => OrderModel,
-            join: {
-                from: 'branches.id',
-                to: 'orders.branchId',
-            },
-        },
-        ubication: {
-            relation: Model.BelongsToOneRelation,
-            modelClass: () => UbicationModel,
-            join: {
-                from: 'branches.ubicationId',
-                to: 'ubications.id',
-            },
-        },
-    };
 }

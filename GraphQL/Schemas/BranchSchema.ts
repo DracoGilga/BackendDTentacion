@@ -5,20 +5,13 @@ export const BranchSchema = gql`
         id: ID!
         branchName: String!
         ubication: Ubication
-        orders: [Order!]
     }
 
     type Ubication {
         id: ID!
-        address: String!
-        city: String!
-        state: String!
-    }
-
-    type Order {
-        id: ID!
-        totalPrice: Float!
-        clientId: Int!
+        description: String!
+        latitude: Float!
+        longitude: Float!
     }
 
     input BranchInput {
