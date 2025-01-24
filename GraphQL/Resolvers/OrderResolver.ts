@@ -28,5 +28,8 @@ export const OrderResolver = {
         products: async (order: any) => {
             return await OrderController.getProductsByOrderId(order.id);
         },
+        branches: async (order: any) => {
+            return await OrderController.getBranchByOrderId(order.id);
+        }
     },
 };

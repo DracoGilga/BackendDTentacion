@@ -13,7 +13,7 @@ export class BranchModel extends Model {
     static relationMappings = {
         ubication: {
             relation: Model.BelongsToOneRelation,
-            modelClass: () => UbicationModel,
+            modelClass: UbicationModel,
             join: {
                 from: 'branches.ubicationId',
                 to: 'ubications.id',

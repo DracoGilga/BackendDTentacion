@@ -6,6 +6,7 @@ export const OrderSchema = gql`
         totalPrice: Float!
         client: Client
         products: [Product!]
+        branches: Branch
     }
 
     input OrderInput {
@@ -45,5 +46,10 @@ export const OrderSchema = gql`
         description: String!
         price: Float!
         stock: Int!
+    }
+
+    type Branch {
+        id: ID!
+        branchName: String!
     }
 `;

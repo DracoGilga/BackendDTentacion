@@ -1,6 +1,7 @@
 import { Model } from 'objection';
 import { ClientModel } from "./ClientModel";
 import { ProductModel } from "./ProductModel";
+import { BranchModel } from './BranchModel';
 
 export class OrderModel extends Model {
     static tableName = 'orders';
@@ -11,15 +12,48 @@ export class OrderModel extends Model {
 
     client?: ClientModel;
     products?: ProductModel[];
+    branches?: BranchModel;
+
+    static relationMappings = {
+        client: {
+            relation: Model.BelongsToOneRelation,
+            modelClass: ClientModel,
+            join: {
+                from: 'orders.clientId',
+                to: 'clients.id'
+            }
+        },
+        products: {
+            relation: Model.ManyToManyRelation,
+            modelClass: ProductModel,
+            join: {
+                from: 'orders.id',
+                through: {
+                    from: 'orders_products.orderId',
+                    to: 'orders_products.productId'
+                },
+                to: 'products.id'
+            }
+        },
+        branches: {
+            relation: Model.BelongsToOneRelation,
+            modelClass: BranchModel,
+            join: {
+                from: 'orders.branchId',
+                to: 'branches.id'
+            }
+        }
+    };
 
     static async findById(id: number): Promise<OrderModel | null> {
-        return await this.query().findById(id).withGraphFetched('[client, products]') || null;
+        return await this.query().findById(id).withGraphFetched('[client, products, branches, ubications]') || null;
     }
 
     static async findAll(): Promise<OrderModel[]> {
-        return await this.query().withGraphFetched('[client, products]');
+        return await this.query()
+            .withGraphFetched('[client, products, branches]');
     }
-
+    
     static async create(orderData: Partial<OrderModel>): Promise<OrderModel> {
         return await this.query().insert(orderData);
     }
@@ -40,5 +74,10 @@ export class OrderModel extends Model {
     static async getProductsByOrderId(orderId: number): Promise<ProductModel[]> {
         const order = await this.query().findById(orderId).withGraphFetched('products');
         return order?.products || [];
+    }
+
+    static async getBranchByOrderId(orderId: number): Promise<BranchModel | null> {
+        const order = await this.query().findById(orderId).withGraphFetched('branches');
+        return order?.branches || null;
     }
 }

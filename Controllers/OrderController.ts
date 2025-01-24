@@ -30,4 +30,8 @@ export class OrderController {
     static async getProductsByOrderId(orderId: number) {
         return await OrderModel.getProductsByOrderId(orderId);
     }
+
+    static async getBranchByOrderId(orderId: number) {
+        return await OrderModel.getBranchByOrderId(orderId);
+    }
 }
