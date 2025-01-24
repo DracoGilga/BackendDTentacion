@@ -1,6 +1,6 @@
 import { Model } from 'objection';
-import { CategoryProductModel } from "./CategoryProductModel";
-import { IngredientModel } from "./IngredientModel";
+import { CategoryProductModel } from './CategoryProductModel';
+import { IngredientModel } from './IngredientModel';
 
 export class ProductModel extends Model {
     static tableName = 'products';
@@ -12,13 +12,36 @@ export class ProductModel extends Model {
     expirationDate!: Date;
     categoryId!: number;
 
-    category?: CategoryProductModel;
+    category?: CategoryProductModel | null;
     ingredients?: IngredientModel[];
+
+    static relationMappings = {
+        category: {
+            relation: Model.BelongsToOneRelation,
+            modelClass: CategoryProductModel,
+            join: {
+                from: 'products.categoryId',
+                to: 'category_product.id'
+            }
+        },
+        ingredients: {
+            relation: Model.ManyToManyRelation,
+            modelClass: IngredientModel,
+            join: {
+                from: 'products.id',
+                through: {
+                    from: 'products_ingredients.productId', 
+                    to: 'products_ingredients.ingredientId' 
+                },
+                to: 'ingredients.id'               
+            }
+        }
+    };
 
     static async findById(id: number): Promise<ProductModel | null> {
         return await this.query().findById(id).withGraphFetched('[category, ingredients]') || null;
     }
-
+    
     static async findAll(): Promise<ProductModel[]> {
         return await this.query().withGraphFetched('[category, ingredients]');
     }
