@@ -22,11 +22,11 @@ export class BranchModel extends Model {
     };
 
     static async findById(id: number): Promise<BranchModel | null> {
-        return await this.query().findById(id).withGraphFetched('[ubication]') || null;
+        return await this.query().findById(id).withGraphJoined('[ubication]') || null;
     }
 
     static async findAll(): Promise<BranchModel[]> {
-        return await this.query().withGraphFetched('[ubication]');
+        return await this.query().withGraphJoined('[ubication]');
     }
 
     static async create(branchData: Partial<BranchModel>): Promise<BranchModel> {
@@ -42,7 +42,7 @@ export class BranchModel extends Model {
     }
 
     static async getUbicationByBranchId(branchId: number): Promise<UbicationModel | null> {
-        const branch = await this.query().findById(branchId).withGraphFetched('ubication');
+        const branch = await this.query().findById(branchId).withGraphJoined('ubication');
         return branch?.ubication || null;
     }
 }

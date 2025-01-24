@@ -51,5 +51,13 @@ export const OrderSchema = gql`
     type Branch {
         id: ID!
         branchName: String!
+        ubication: Ubication
+    }
+
+    type Ubication {
+        id: ID!
+        description: String!
+        latitude: Float!
+        longitude: Float!
     }
 `;

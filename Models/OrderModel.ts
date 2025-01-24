@@ -46,12 +46,11 @@ export class OrderModel extends Model {
     };
 
     static async findById(id: number): Promise<OrderModel | null> {
-        return await this.query().findById(id).withGraphFetched('[client, products, branches, ubications]') || null;
+        return await this.query().findById(id).withGraphJoined('[client, products, branches.ubication]') || null;
     }
 
     static async findAll(): Promise<OrderModel[]> {
-        return await this.query()
-            .withGraphFetched('[client, products, branches]');
+        return await this.query().withGraphJoined('[client, products, branches.ubication]');
     }
     
     static async create(orderData: Partial<OrderModel>): Promise<OrderModel> {
@@ -67,17 +66,17 @@ export class OrderModel extends Model {
     }
 
     static async getClientByOrderId(orderId: number): Promise<ClientModel | null> {
-        const order = await this.query().findById(orderId).withGraphFetched('client');
+        const order = await this.query().findById(orderId).withGraphJoined('client');
         return order?.client || null;
     }
 
     static async getProductsByOrderId(orderId: number): Promise<ProductModel[]> {
-        const order = await this.query().findById(orderId).withGraphFetched('products');
+        const order = await this.query().findById(orderId).withGraphJoined('products');
         return order?.products || [];
     }
 
     static async getBranchByOrderId(orderId: number): Promise<BranchModel | null> {
-        const order = await this.query().findById(orderId).withGraphFetched('branches');
+        const order = await this.query().findById(orderId).withGraphJoined('branches.ubication'); 
         return order?.branches || null;
     }
 }
