@@ -27,7 +27,6 @@ export const BranchSchema = gql`
     type Query {
         getBranchById(id: ID!): Branch
         getAllBranches: [Branch!]
-        getOrdersByBranchId(branchId: ID!): [Order!]
         getUbicationByBranchId(branchId: ID!): Ubication
     }
 
