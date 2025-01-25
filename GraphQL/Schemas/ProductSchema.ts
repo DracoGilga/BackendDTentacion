@@ -37,10 +37,4 @@ export const ProductSchema = gql`
         updateProduct(id: ID!, input: UpdateProductInput!): Product
         deleteProduct(id: ID!): Boolean!
     }
-
-    type CategoryProduct {
-        id: ID!
-        categoryName: String!
-        categoryDescription: String!
-    }
 `;

@@ -7,13 +7,6 @@ export const BranchSchema = gql`
         ubication: Ubication
     }
 
-    type Ubication {
-        id: ID!
-        description: String!
-        latitude: Float!
-        longitude: Float!
-    }
-
     input BranchInput {
         branchName: String!
         ubicationId: Int!

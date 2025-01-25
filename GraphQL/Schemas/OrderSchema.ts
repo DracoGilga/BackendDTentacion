@@ -29,35 +29,4 @@ export const OrderSchema = gql`
         updateOrder(id: ID!, input: UpdateOrderInput!): Order
         deleteOrder(id: ID!): Boolean!
     }
-
-    type Client {
-        id: ID!
-        name: String!
-        lastName: String!
-        phone: String!
-        birthDate: String!
-        email: String!
-        role: String!
-    }
-
-    type Product {
-        id: ID!
-        name: String!
-        description: String!
-        price: Float!
-        stock: Int!
-    }
-
-    type Branch {
-        id: ID!
-        branchName: String!
-        ubication: Ubication
-    }
-
-    type Ubication {
-        id: ID!
-        description: String!
-        latitude: Float!
-        longitude: Float!
-    }
 `;
