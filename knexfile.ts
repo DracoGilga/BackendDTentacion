@@ -1,4 +1,8 @@
-import Knex from 'knex';
+import * as dotenv from 'dotenv'; // Importa dotenv
+import type { Knex } from "knex";
+
+// Carga las variables de entorno desde el archivo .env
+dotenv.config();
 
 const config: Knex.Config = {
     client: 'mssql',
@@ -6,7 +10,7 @@ const config: Knex.Config = {
         host: process.env.DB_HOST || 'localhost',
         user: process.env.DB_USER || 'your_user',
         password: process.env.DB_PASSWORD || 'your_password',
-        database: process.env.DB_DATABASE || 'your_database',
+        database: process.env.DB_NAME || 'your_database', // Asegúrate de que esté configurado correctamente
         port: Number(process.env.DB_PORT) || 1433,
     },
     migrations: {
