@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "target": "ES6",
-        "module": "ES6",
+        "module": "CommonJS", // Cambiado para compatibilidad con Knex
         "moduleResolution": "Node",
         "esModuleInterop": true,
         "skipLibCheck": true,
@@ -10,16 +10,10 @@
         "outDir": "./dist",
         "baseUrl": "./",
         "paths": {
-            "*": [
-                "node_modules/*"
-            ]
-        }
+            "*": ["node_modules/*"]
+        },
+        "rootDirs": ["."], // Agregado para manejar varias carpetas raíz si es necesario
     },
-    "include": [
-        "*.ts",
-        "*.tsx"
-    ],
-    "exclude": [
-        "node_modules"
-    ]
+    "include": ["**/*.ts"], // Cambiado para incluir todos los archivos TypeScript en subcarpetas
+    "exclude": ["node_modules"]
 }
