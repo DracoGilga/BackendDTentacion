@@ -1,6 +1,8 @@
 import { RedisDB } from "../Config/RedisDB";
+import { Config } from "../Config/Config";
 
-const REDIS_TIME: number = 3600;
+const environment = process.env.NODE_ENV || "development";
+const REDIS_TIME: number = Config[environment].redisExpirationTime * 60;
 
 export const RedisHelper = {
     async get<T>(key: string): Promise<T | null> {
