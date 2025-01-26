@@ -10,7 +10,7 @@ const config: Knex.Config = {
         host: process.env.DB_HOST || 'localhost',
         user: process.env.DB_USER || 'your_user',
         password: process.env.DB_PASSWORD || 'your_password',
-        database: process.env.DB_NAME || 'your_database', // Asegúrate de que esté configurado correctamente
+        database: process.env.DB_NAME || 'database', // Asegúrate de que esté configurado correctamente
         port: Number(process.env.DB_PORT) || 1433,
     },
     migrations: {
@@ -19,11 +19,7 @@ const config: Knex.Config = {
     },
     seeds: {
         directory: './seeds',
-    },
-    pool: {
-        min: 2,
-        max: 10,
-    },
+    }
 };
 
 export default config;
