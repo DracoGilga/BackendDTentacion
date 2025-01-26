@@ -1,0 +1,7 @@
+logs/
+node_modules/
+.env
+.git/
+npm-debug.log
+.gitignore
+Seed/

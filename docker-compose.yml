@@ -1,0 +1,63 @@
+version: "3.8"
+
+services:
+  redis:
+    image: redis
+    container_name: redis
+    restart: always
+    networks:
+      - backend_network
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+
+  d-tentacion:
+    image: d-tentacion
+    container_name: d-tentacion
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: npm run server
+    depends_on:
+      - redis
+      - sqlserver
+    networks:
+      - backend_network
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_HOST=sqlserver
+      - DB_USER=sa
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_PORT=1433
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_EXPIRATION_TIME_MINUTES=${REDIS_EXPIRATION_TIME_MINUTES}
+
+  sqlserver:
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    container_name: sqlserver
+    restart: always
+    depends_on:
+      - redis
+    networks:
+      - backend_network
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - ./sql:/var/opt/mssql/sql
+    entrypoint: /bin/bash -c "
+      /opt/mssql/bin/sqlservr & 
+      sleep 20 &&
+      /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P '${DB_PASSWORD}' -i /var/opt/mssql/sql/dbo.sql && /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P '${DB_PASSWORD}' -d ${DB_DATABASE} -i /var/opt/mssql/sql/SeedExemple.sql && wait"
+
+networks:
+  backend_network:
+    driver: bridge

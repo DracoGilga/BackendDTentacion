@@ -45,7 +45,6 @@ export const Config: IConfig = {
                 database: process.env.DB_DATABASE,
                 port: Number(process.env.DB_PORT) || 1433,
             },
-            debug: true,
         },
         redis: {
             host: process.env.REDIS_HOST || '127.0.0.1',
@@ -64,7 +63,6 @@ export const Config: IConfig = {
                 database: process.env.TEST_DB_DATABASE,
                 port: Number(process.env.TEST_DB_PORT) || 1433,
             },
-            debug: true,
         },
         redis: {
             host: process.env.REDIS_HOST || '127.0.0.1',
