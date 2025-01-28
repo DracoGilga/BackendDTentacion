@@ -2,6 +2,7 @@ import './Config/DBConfig';
 import './Config/RedisDB';
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
+import { TokenMiddleware } from './Middlewares/TokenMiddleware';
 import { LogGraphQLMiddleware } from './Middlewares/LogGraphQLMiddleware';
 
 import { AdminSchema } from './GraphQL/Schemas/AdminSchema';
@@ -25,6 +26,11 @@ import { ProductResolver } from './GraphQL/Resolvers/ProductResolver';
 import { UbicationResolver } from './GraphQL/Resolvers/UbicationResolver';
 import { LogResolver } from './GraphQL/Resolvers/LogResolver';
 import { LoginResolver } from './GraphQL/Resolvers/LoginResolver';
+
+interface CustomContext {
+    headers: Record<string, string | undefined>;
+    setToken: (token: string) => void;
+}
 
 const typeDefs = [
     AdminSchema,
@@ -52,16 +58,20 @@ const resolvers = [
     LoginResolver,
 ];
 
-const server = new ApolloServer({
+const server = new ApolloServer<CustomContext>({
     typeDefs,
     resolvers,
-    plugins: [LogGraphQLMiddleware],
+    plugins: [LogGraphQLMiddleware], 
+    context: ({ req, res }) => {
+        return TokenMiddleware({ req, res });
+    },
 });
+
 const startServer = async () => {
     const { url } = await startStandaloneServer(server, {
         listen: { port: 8080 },
-        context: async ({ req }) => {
-            return { headers: req.headers };
+        context: ({ req, res }) => {
+            return TokenMiddleware({ req, res });
         },
     });
 

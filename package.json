@@ -8,6 +8,7 @@
         "graphql-tools": "^9.0.11",
         "inquirer": "^12.3.2",
         "ioredis": "^5.4.2",
+        "jsonwebtoken": "^9.0.2",
         "knex": "^3.1.0",
         "moment": "^2.30.1",
         "mssql": "^11.0.1",
@@ -18,5 +19,8 @@
         "start": "npx tsx app.ts",
         "migrate": "npx knex migrate:latest --knexfile ./knexfile.ts",
         "server": "npx tsx index.ts"
+    },
+    "devDependencies": {
+        "@types/jsonwebtoken": "^9.0.8"
     }
 }
