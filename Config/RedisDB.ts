@@ -4,8 +4,14 @@ import { Config } from "./Config";
 const environment = process.env.NODE_ENV || "development";
 const redisConfig = Config[environment].redis;
 
-export const RedisDB = new Redis({
-	host: redisConfig.host,
-	port: redisConfig.port,
-	password: redisConfig.password,
-});
+const redisOptions: any = {
+    host: redisConfig.host,
+    port: redisConfig.port,
+    password: redisConfig.password,
+};
+
+if (environment === "production") {
+    redisOptions.tls = { rejectUnauthorized: false };
+}
+
+export const RedisDB = new Redis(redisOptions);

@@ -3,7 +3,7 @@ import { Knex } from "knex";
 
 config();
 
-interface IDBConfig extends Knex.Config { }
+interface IDBConfig extends Knex.Config {}
 
 interface IRedisConfig {
     host: string;
@@ -57,10 +57,10 @@ export const Config: IConfig = {
         },
         redis: {
             host: process.env.REDIS_HOST || "127.0.0.1",
-            port: Number(process.env.REDIS_PORT) || 6379,
+            port: Number(process.env.REDIS_PORT) || 6379, 
             password: process.env.REDIS_PASSWORD || undefined,
         },
-        redisExpirationTime: Number(process.env.REDIS_EXPIRATION_TIME_MINUTES) || 1,
+        redisExpirationTime: Number(process.env.REDIS_EXPIRATION_TIME_MINUTES) || 10,
         jwt: {
             secret: process.env.JWT_SECRET || "default_secret",
             expirationTime: Number(process.env.JWT_EXPIRATION_TIME) || 3600, 
@@ -78,11 +78,11 @@ export const Config: IConfig = {
             },
         },
         redis: {
-            host: process.env.REDIS_HOST || "127.0.0.1",
-            port: Number(process.env.REDIS_PORT) || 6379,
-            password: process.env.REDIS_PASSWORD || undefined,
+            host: process.env.TEST_REDIS_HOST || "127.0.0.1",
+            port: Number(process.env.TEST_REDIS_PORT) || 6379,  
+            password: process.env.TEST_REDIS_PASSWORD || undefined,
         },
-        redisExpirationTime: Number(process.env.REDIS_EXPIRATION_TIME_MINUTES) || 1,
+        redisExpirationTime: Number(process.env.TEST_REDIS_EXPIRATION_TIME_MINUTES) || 10,
         jwt: {
             secret: process.env.JWT_SECRET || "default_secret",
             expirationTime: Number(process.env.JWT_EXPIRATION_TIME) || 3600, 
@@ -100,11 +100,11 @@ export const Config: IConfig = {
             },
         },
         redis: {
-            host: process.env.REDIS_HOST || "127.0.0.1",
-            port: Number(process.env.REDIS_PORT) || 6379,
-            password: process.env.REDIS_PASSWORD || undefined,
+            host: process.env.PROD_REDIS_HOST || "127.0.0.1",
+            port: Number(process.env.PROD_REDIS_PORT) || 6380,  
+            password: process.env.PROD_REDIS_PASSWORD || undefined,
         },
-        redisExpirationTime: Number(process.env.REDIS_EXPIRATION_TIME_MINUTES) || 1,
+        redisExpirationTime: Number(process.env.PROD_REDIS_EXPIRATION_TIME_MINUTES) || 10,
         jwt: {
             secret: process.env.JWT_SECRET || "default_secret",
             expirationTime: Number(process.env.JWT_EXPIRATION_TIME) || 3600, 
