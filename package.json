@@ -21,7 +21,10 @@
     "scripts": {
         "start": "npx tsx app.ts",
         "migrate": "npx knex migrate:latest --knexfile ./knexfile.ts",
-        "server": "npx tsx index.ts"
+        "server": "npx tsx index.ts",
+        "dev": "NODE_ENV=development npx tsx index.ts",
+        "test": "NODE_ENV=test npx tsx index.ts",
+        "prod": "NODE_ENV=production npx tsx index.ts"
     },
     "devDependencies": {
         "@types/bcryptjs": "^2.4.6",
