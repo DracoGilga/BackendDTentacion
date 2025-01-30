@@ -1,5 +1,7 @@
 import { BranchController } from '../../Controllers/BranchController';
 import { BranchModel } from '../../Models/BranchModel';
+import { CustomContext } from '../../Middlewares/TokenMiddleware';
+import { authorizeRoles  } from '../../Utils/AuthUtils';
 
 export const BranchResolver = {
     Query: {
@@ -17,15 +19,18 @@ export const BranchResolver = {
     },
 
     Mutation: {
-        createBranch: async (_: any, { input }: { input: Partial<BranchModel> }) => {
+        createBranch: async (_: any, { input }: { input: Partial<BranchModel> }, context: CustomContext) => {
+            authorizeRoles(context, ['Admin']); 
             return await BranchController.createBranch(input);
         },
 
-        updateBranch: async (_: any, { id, input }: { id: number; input: Partial<BranchModel> }) => {
+        updateBranch: async (_: any, { id, input }: { id: number; input: Partial<BranchModel> }, context: CustomContext) => {
+            authorizeRoles(context, ['Admin']); 
             return await BranchController.updateBranch(id, input);
         },
 
-        deleteBranch: async (_: any, { id }: { id: number }) => {
+        deleteBranch: async (_: any, { id }: { id: number }, context: CustomContext) => {
+            authorizeRoles(context, ['Admin']); 
             return await BranchController.deleteBranch(id);
         },
     },

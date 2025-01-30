@@ -1,34 +1,44 @@
 import { OrderController } from "../../Controllers/OrderController";
 import { OrderModel } from "../../Models/OrderModel";
+import { CustomContext } from '../../Middlewares/TokenMiddleware';
+import { authorizeRoles  } from '../../Utils/AuthUtils';
 
 export const OrderResolver = {
     Query: {
-        getOrderById: async (_: any, { id }: { id: number }) => {
+        getOrderById: async (_: any, { id }: { id: number }, context: CustomContext) => {
+            authorizeRoles(context, ['Admin','Client']); 
             return await OrderController.getOrderById(id);
         },
-        getAllOrders: async () => {
+        getAllOrders: async (context: CustomContext) => {
+            authorizeRoles(context, ['Admin']); 
             return await OrderController.getAllOrders();
         },
     },
     Mutation: {
-        createOrder: async (_: any, { input }: { input: Partial<OrderModel> }) => {
+        createOrder: async (_: any, { input }: { input: Partial<OrderModel> }, context: CustomContext) => {
+            authorizeRoles(context, ['Admin','Client']);
             return await OrderController.createOrder(input);
         },
-        updateOrder: async (_: any, { id, input }: { id: number; input: Partial<OrderModel> }) => {
+        updateOrder: async (_: any, { id, input }: { id: number; input: Partial<OrderModel> }, context: CustomContext) => {
+            authorizeRoles(context, ['Admin']); 
             return await OrderController.updateOrder(id, input);
         },
-        deleteOrder: async (_: any, { id }: { id: number }) => {
+        deleteOrder: async (_: any, { id }: { id: number }, context: CustomContext) => {
+            authorizeRoles(context, ['Admin','Client']);
             return await OrderController.deleteOrder(id);
         },
     },
     Order: {
-        client: async (order: any) => {
+        client: async (order: any, context: CustomContext) => {
+            authorizeRoles(context, ['Admin','Client']); 
             return await OrderController.getClientByOrderId(order.id);
         },
-        products: async (order: any) => {
+        products: async (order: any, context: CustomContext) => {
+            authorizeRoles(context, ['Admin','Client']);
             return await OrderController.getProductsByOrderId(order.id);
         },
-        branches: async (order: any) => {
+        branches: async (order: any, context: CustomContext) => {
+            authorizeRoles(context, ['Admin','Client']);
             return await OrderController.getBranchByOrderId(order.id);
         }
     },

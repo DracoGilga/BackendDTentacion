@@ -1,5 +1,7 @@
 import { CategoryProductController } from '../../Controllers/CategoryProductController';
 import { CategoryProductModel } from '../../Models/CategoryProductModel';
+import { CustomContext } from '../../Middlewares/TokenMiddleware';
+import { authorizeRoles  } from '../../Utils/AuthUtils';
 
 export const CategoryProductResolver = {
     Query: {
@@ -13,15 +15,18 @@ export const CategoryProductResolver = {
     },
 
     Mutation: {
-        createCategoryProduct: async (_: any, { input }: { input: Partial<CategoryProductModel> }) => {
+        createCategoryProduct: async (_: any, { input }: { input: Partial<CategoryProductModel> }, context: CustomContext) => {
+            authorizeRoles(context, ['Admin']); 
             return await CategoryProductController.createCategoryProduct(input);
         },
 
-        updateCategoryProduct: async (_: any, { id, input }: { id: number; input: Partial<CategoryProductModel> }) => {
+        updateCategoryProduct: async (_: any, { id, input }: { id: number; input: Partial<CategoryProductModel> }, context: CustomContext) => {
+            authorizeRoles(context, ['Admin']); 
             return await CategoryProductController.updateCategoryProduct(id, input);
         },
 
-        deleteCategoryProduct: async (_: any, { id }: { id: number }) => {
+        deleteCategoryProduct: async (_: any, { id }: { id: number }, context: CustomContext) => {
+            authorizeRoles(context, ['Admin']); 
             return await CategoryProductController.deleteCategoryProduct(id);
         },
     },

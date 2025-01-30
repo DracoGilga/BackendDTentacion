@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug TS App",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/app.ts",
+            "runtimeExecutable": "npx",
+            "runtimeArgs": [
+                "tsx"
+            ],
+            "outFiles": [
+                "${workspaceFolder}/**/*.js"
+            ]
+        }
+    ]
+}

@@ -1,13 +1,17 @@
 import { ClientController } from '../../Controllers/ClientController';
 import { ClientModel } from '../../Models/ClientModel';
+import { CustomContext } from '../../Middlewares/TokenMiddleware';
+import { authorizeRoles } from '../../Utils/AuthUtils';
 
 export const ClientResolver = {
     Query: {
-        getClientById: async (_: any, { id }: { id: number }) => {
+        getClientById: async (_: any, { id }: { id: number }, context: CustomContext) => {
+            authorizeRoles(context, ['Admin', 'Client']);
             return await ClientController.getClientById(id);
         },
 
-        getAllClients: async () => {
+        getAllClients: async (context: CustomContext) => {
+            authorizeRoles(context, ['Admin']);
             return await ClientController.getAllClients();
         },
     },
@@ -17,11 +21,13 @@ export const ClientResolver = {
             return await ClientController.createClient(input);
         },
 
-        updateClient: async (_: any, { id, input }: { id: number; input: Partial<ClientModel> }) => {
+        updateClient: async (_: any, { id, input }: { id: number; input: Partial<ClientModel> }, context: CustomContext) => {
+            authorizeRoles(context, ['Admin', 'Client']);
             return await ClientController.updateClient(id, input);
         },
 
-        deleteClient: async (_: any, { id }: { id: number }) => {
+        deleteClient: async (_: any, { id }: { id: number }, context: CustomContext) => {
+            authorizeRoles(context, ['Admin', 'Client']);
             return await ClientController.deleteClient(id);
         },
     },
