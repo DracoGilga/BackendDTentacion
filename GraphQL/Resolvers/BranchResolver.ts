@@ -2,6 +2,7 @@ import { BranchController } from '../../Controllers/BranchController';
 import { BranchModel } from '../../Models/BranchModel';
 import { CustomContext } from '../../Middlewares/TokenMiddleware';
 import { authorizeRoles  } from '../../Utils/AuthUtils';
+import { GraphQLError } from 'graphql';
 
 export const BranchResolver = {
     Query: {
@@ -32,6 +33,17 @@ export const BranchResolver = {
         deleteBranch: async (_: any, { id }: { id: number }, context: CustomContext) => {
             authorizeRoles(context, ['Admin']); 
             return await BranchController.deleteBranch(id);
+        },
+    },
+
+    Branch: {
+        id: (parent: BranchModel, _: any, context: CustomContext) => {
+            try {
+                authorizeRoles(context, ['Admin']);
+                return parent.id;
+            } catch {
+                throw new GraphQLError('Access denied: You do not have permission to see the ID');
+            }
         },
     },
 };

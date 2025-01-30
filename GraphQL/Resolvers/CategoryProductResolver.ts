@@ -2,6 +2,7 @@ import { CategoryProductController } from '../../Controllers/CategoryProductCont
 import { CategoryProductModel } from '../../Models/CategoryProductModel';
 import { CustomContext } from '../../Middlewares/TokenMiddleware';
 import { authorizeRoles  } from '../../Utils/AuthUtils';
+import { GraphQLError } from 'graphql';
 
 export const CategoryProductResolver = {
     Query: {
@@ -28,6 +29,17 @@ export const CategoryProductResolver = {
         deleteCategoryProduct: async (_: any, { id }: { id: number }, context: CustomContext) => {
             authorizeRoles(context, ['Admin']); 
             return await CategoryProductController.deleteCategoryProduct(id);
+        },
+    },
+
+    CategoryProduct: {
+        id: (parent: CategoryProductModel, _: any, context: CustomContext) => {
+            try {
+                authorizeRoles(context, ['Admin']);
+                return parent.id;
+            } catch {
+                throw new GraphQLError('Access denied: You do not have permission to see the ID');
+            }
         },
     },
 };

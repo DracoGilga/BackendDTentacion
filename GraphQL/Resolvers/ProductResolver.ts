@@ -1,7 +1,8 @@
 import { ProductController } from "../../Controllers/ProductController";
 import { ProductModel } from "../../Models/ProductModel";
 import { CustomContext } from '../../Middlewares/TokenMiddleware';
-import { authorizeRoles  } from '../../Utils/AuthUtils'
+import { authorizeRoles  } from '../../Utils/AuthUtils';
+import { GraphQLError } from 'graphql';
 
 export const ProductResolver = {
     Query: {
@@ -29,13 +30,40 @@ export const ProductResolver = {
     },
 
     Product: {
-        category: async (product: any, context: CustomContext) => {
-            authorizeRoles(context, ['Admin']);
+        category: async (product: any) => {
             return await ProductController.getCategoryByProductId(product.id);
         },
-        ingredients: async (product: any, context: CustomContext) => {
-            authorizeRoles(context, ['Admin']);
-            return await ProductController.getIngredientsByProductId(product.id);
+        ingredients: async (parent: ProductModel, _: any, context: CustomContext) => {
+            try {
+                authorizeRoles(context, ['Admin']);
+                return await ProductController.getIngredientsByProductId(parent.id);
+            } catch {
+                throw new GraphQLError('Access denied: You do not have permission to see the ingredients');
+            }
+        },
+        id: (parent: ProductModel, _: any, context: CustomContext) => {
+            try {
+                authorizeRoles(context, ['Admin']);
+                return parent.id;
+            } catch {
+                throw new GraphQLError('Access denied: You do not have permission to see the ID');
+            }
+        },
+        stock: (parent: ProductModel, _: any, context: CustomContext) => {
+            try {
+                authorizeRoles(context, ['Admin']);
+                return parent.stock;
+            } catch {
+                throw new GraphQLError('Access denied: You do not have permission to see the stock');
+            }
+        },
+        expirationDate: (parent: ProductModel, _: any, context: CustomContext) => {
+            try {
+                authorizeRoles(context, ['Admin']);
+                return parent.expirationDate;
+            } catch {
+                throw new GraphQLError('Access denied: You do not have permission to see the expiration date');
+            }
         },
     },
 };

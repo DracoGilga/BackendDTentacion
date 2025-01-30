@@ -2,6 +2,7 @@ import { ClientController } from '../../Controllers/ClientController';
 import { ClientModel } from '../../Models/ClientModel';
 import { CustomContext } from '../../Middlewares/TokenMiddleware';
 import { authorizeRoles } from '../../Utils/AuthUtils';
+import { GraphQLError } from 'graphql';
 
 export const ClientResolver = {
     Query: {
@@ -29,6 +30,25 @@ export const ClientResolver = {
         deleteClient: async (_: any, { id }: { id: number }, context: CustomContext) => {
             authorizeRoles(context, ['Admin', 'Client']);
             return await ClientController.deleteClient(id);
+        },
+    },
+
+    Client: {
+        id: (parent: ClientModel, _: any, context: CustomContext) => {
+            try {
+                authorizeRoles(context, ['Admin']);
+                return parent.id;
+            } catch {
+                throw new GraphQLError('Access denied: You do not have permission to see the ID');
+            }
+        },
+        role: (parent: ClientModel, _: any, context: CustomContext) => {
+            try {
+                authorizeRoles(context, ['Admin']);
+                return parent.role;
+            } catch {
+                throw new GraphQLError('Access denied: You do not have permission to see the role');
+            }
         },
     },
 };
