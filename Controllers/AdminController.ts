@@ -1,12 +1,18 @@
 import { AdminModel } from '../Models/AdminModel';
 import { RedisHelper } from '../Utils/RedisHelper';
+import { EncryptionUtils } from '../Utils/EncryptionUtils';
 
 export class AdminController {
     static async getAdminById(id: number) {
         const cacheKey = `admin:${id}`;
 
         return await RedisHelper.getOrCreate<AdminModel | null>(cacheKey, async () => {
-            return await AdminModel.findById(id);
+            const admin = await AdminModel.findById(id);
+            
+            if (admin) 
+                admin.phone = EncryptionUtils.decryptData(admin.phone);
+
+            return admin;
         });
     }
 
@@ -14,11 +20,20 @@ export class AdminController {
         const cacheKey = `admins:firstname:${firstName}`;
 
         return await RedisHelper.getOrCreate<AdminModel[]>(cacheKey, async () => {
-            return await AdminModel.findByFirstName(firstName);
+            const admins = await AdminModel.findByFirstName(firstName);
+
+            admins.forEach((admin) => {
+                admin.phone = EncryptionUtils.decryptData(admin.phone);
+            });
+
+            return admins;
         });
     }
 
     static async createAdmin(input: Partial<AdminModel>) {
+        input.password = await EncryptionUtils.hashPassword(input.password!);
+        input.phone = EncryptionUtils.encryptData(input.phone!);
+
         const newAdmin = await AdminModel.create(input);
 
         await RedisHelper.delKeysByPattern('admins:*');
@@ -27,6 +42,11 @@ export class AdminController {
     }
 
     static async updateAdmin(id: number, input: Partial<AdminModel>) {
+        if (input.password)
+            input.password = await EncryptionUtils.hashPassword(input.password!);
+        if (input.phone) 
+            input.phone = EncryptionUtils.encryptData(input.phone!);
+
         const updatedAdmin = await AdminModel.updateById(id, input);
 
         if (updatedAdmin) {

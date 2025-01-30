@@ -18,7 +18,6 @@ export const verifyToken = (token: string): object | null => {
 
         return null;
     } catch{
-        console.error("Token inválido o expirado:");
         return null;
     }
 };

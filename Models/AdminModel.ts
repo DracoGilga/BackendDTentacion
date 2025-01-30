@@ -31,8 +31,7 @@ export class AdminModel extends Model {
         return await this.query().where('firstName', firstName);
     }
 
-    static async login(username: string, password: string): Promise<AdminModel | null> {
-        const admin = await this.query().where('username', username).first();
-        return admin && admin.password === password ? admin : null;
+    static async findByUsername(username: string): Promise<AdminModel | null> {
+        return await this.query().where('username', username).first() || null;
     }
 }

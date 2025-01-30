@@ -1,8 +1,10 @@
 {
     "dependencies": {
         "@apollo/server": "^4.11.3",
+        "bcryptjs": "^2.4.3",
         "body-parser": "^1.20.3",
         "cors": "^2.8.5",
+        "crypto-js": "^4.2.0",
         "dotenv": "^16.4.7",
         "express": "^4.21.2",
         "graphql": "^16.10.0",
@@ -22,6 +24,8 @@
         "server": "npx tsx index.ts"
     },
     "devDependencies": {
+        "@types/bcryptjs": "^2.4.6",
+        "@types/crypto-js": "^4.2.2",
         "@types/jsonwebtoken": "^9.0.8"
     }
 }

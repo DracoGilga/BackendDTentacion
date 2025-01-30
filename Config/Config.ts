@@ -16,30 +16,39 @@ interface IJwtConfig {
     expirationTime: number;
 }
 
+interface IEncryptionConfig {
+    aesSecretKey: string;
+    saltRounds: number;
+}
+
 interface IConfig {
     development: {
         database: IDBConfig;
         redis: IRedisConfig;
         redisExpirationTime: number;
         jwt: IJwtConfig;
+        encryption: IEncryptionConfig;
     };
     test: {
         database: IDBConfig;
         redis: IRedisConfig;
         redisExpirationTime: number;
         jwt: IJwtConfig;
+        encryption: IEncryptionConfig;
     };
     production: {
         database: IDBConfig;
         redis: IRedisConfig;
         redisExpirationTime: number;
         jwt: IJwtConfig;
+        encryption: IEncryptionConfig;
     };
     [key: string]: {
         database: IDBConfig;
         redis: IRedisConfig;
         redisExpirationTime: number;
         jwt: IJwtConfig;
+        encryption: IEncryptionConfig;
     };
 }
 
@@ -62,8 +71,12 @@ export const Config: IConfig = {
         },
         redisExpirationTime: Number(process.env.REDIS_EXPIRATION_TIME_MINUTES) || 10,
         jwt: {
-            secret: process.env.JWT_SECRET || "default_secret",
+            secret: process.env.JWT_SECRET || "secret",
             expirationTime: Number(process.env.JWT_EXPIRATION_TIME) || 3600, 
+        },
+        encryption: {
+            aesSecretKey: process.env.AES_SECRET_KEY || 'secret',
+            saltRounds: Number(process.env.SALT_ROUNDS) || 10,
         },
     },
     test: {
@@ -84,8 +97,12 @@ export const Config: IConfig = {
         },
         redisExpirationTime: Number(process.env.TEST_REDIS_EXPIRATION_TIME_MINUTES) || 10,
         jwt: {
-            secret: process.env.JWT_SECRET || "default_secret",
+            secret: process.env.JWT_SECRET || "secret",
             expirationTime: Number(process.env.JWT_EXPIRATION_TIME) || 3600, 
+        },
+        encryption: {
+            aesSecretKey: process.env.AES_SECRET_KEY || 'secret',
+            saltRounds: Number(process.env.SALT_ROUNDS) || 10,
         },
     },
     production: {
@@ -106,8 +123,12 @@ export const Config: IConfig = {
         },
         redisExpirationTime: Number(process.env.PROD_REDIS_EXPIRATION_TIME_MINUTES) || 10,
         jwt: {
-            secret: process.env.JWT_SECRET || "default_secret",
+            secret: process.env.JWT_SECRET || "secret",
             expirationTime: Number(process.env.JWT_EXPIRATION_TIME) || 3600, 
+        },
+        encryption: {
+            aesSecretKey: process.env.AES_SECRET_KEY || 'secret',
+            saltRounds: Number(process.env.SALT_ROUNDS) || 10,
         },
     },
 };

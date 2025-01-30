@@ -1,6 +1,7 @@
 import { AdminModel } from "../Models/AdminModel";
 import { ClientModel } from "../Models/ClientModel";
 import { generateToken } from "../Utils/JwtUtils";
+import bcrypt from 'bcryptjs';
 
 export class LoginController {
     static async login(user: string, password: string, setToken: (token: string) => void) {
@@ -10,21 +11,26 @@ export class LoginController {
         let phone: string | null = null;
         let payload: any = {};
 
-        if (/^\d{10}$/.test(user)) {
-            const client = await ClientModel.login(user, password);
+        
+        if (/^\d{10}$/.test(user)) { 
+            const client = await ClientModel.findByPhone(user);
             if (client) {
-                role = client.role;
-                lastName = client.lastName;
-                phone = client.phone;
-                payload = { lastName, phone, role };
+                if (await bcrypt.compare(password, client.password)) { 
+                    role = client.role;
+                    lastName = client.lastName;
+                    phone = client.phone;
+                    payload = { lastName, phone, role };
+                } 
             }
-        } else {
-            const admin = await AdminModel.login(user, password);
+        } else { 
+            const admin = await AdminModel.findByUsername(user);
             if (admin) {
-                role = admin.role;
-                lastName = admin.lastName;
-                username = admin.username;
-                payload = { lastName, username, role };
+                if (await bcrypt.compare(password, admin.password)) {
+                    role = admin.role;
+                    lastName = admin.lastName;
+                    username = admin.username;
+                    payload = { lastName, username, role };
+                }
             }
         }
 

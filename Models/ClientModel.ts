@@ -32,12 +32,7 @@ export class ClientModel extends Model {
         return await this.query().deleteById(id);
     }
 
-    static async login(phone: string, password: string): Promise<ClientModel | null> {
-        const client = await this.query().where('phone', phone).first();
-
-        if (client && client.password === password)
-            return client;
-
-        return null;
+    static async findByPhone(phone: string): Promise<ClientModel | null> {
+        return await this.query().where('phone', phone).first() || null;
     }
 }

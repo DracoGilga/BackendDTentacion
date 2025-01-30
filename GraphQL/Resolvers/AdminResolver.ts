@@ -22,8 +22,7 @@ export const AdminResolver = {
             return await AdminController.createAdmin(input);
         },
 
-        updateAdmin: async (_: any, { id, input }: { id: number; input: Partial<AdminModel> }, context: CustomContext) => {
-            authorizeRoles(context, ['Admin']);
+        updateAdmin: async (_: any, { id, input }: { id: number; input: Partial<AdminModel> }) => {
             return await AdminController.updateAdmin(id, input);
         },
 
