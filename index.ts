@@ -73,6 +73,11 @@ const startServer = async () => {
         context: ({ req, res }) => {
             return TokenMiddleware({ req, res });
         },
+        cors: {
+            origin: '*',
+            methods: ['GET', 'POST', 'OPTIONS'],
+            allowedHeaders: ['Content-Type', 'Authorization'],
+        },
     });
 
     console.log(`🚀 Server is running at ${url}`);
