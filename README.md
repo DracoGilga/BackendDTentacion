@@ -137,7 +137,7 @@ For production deployments, set NODE_ENV=production to ensure the correct config
     ```
 In a cloud or containerized environment, NODE_ENV=production should be set in the system environment variables instead of passing it in the command
 
-## 🤝 Contribuciones
+## 🤝 Contributions
 
 Suggestions and contributions are welcome! If you want to contribute, follow these steps:
 
